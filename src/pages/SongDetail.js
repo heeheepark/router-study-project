@@ -4,7 +4,6 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 const SongDetail = ({ songs }) => {
   const navigate = useNavigate();
   const { id } = useParams();
-  // id와 같은 1개의 객체를 songs에서 추출해서 화면을 갱신한다. 화면 갱신을 위해서 state를 활용해야한다.
   const [title, setTitle] = useState('');
   const [musician, setMusician] = useState('');
   const [youtube_link, setYoutubeLink] = useState('');
@@ -19,9 +18,10 @@ const SongDetail = ({ songs }) => {
     const song = songs.find((item) => item.id === parseInt(id));
     // 검색이 되지 않을 경우를 위한 처리
     if (song) {
-      setTitle(song.title);
-      setMusician(song.musician);
-      setYoutubeLink(`https://m.youtube.com/watch?v=${song.youtube_link}`);
+      // 조금 더 안전하게 처리
+      setTitle(song.title ? song.title : '');
+      setMusician(song.musician ? song.musician : '');
+      setYoutubeLink(song.youtube_link ? `https://m.youtube.com/watch?v=${song.youtube_link}` : '');
     } else {
       alert('자료가 없습니다.');
       navigate('/songs');
